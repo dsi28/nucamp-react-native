@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView, FlatList } from 'react-native';
 import { Card } from 'react-native-elements';
 import { CAMPSITES } from '../shared/campsites';
+import { COMMENTS } from '../shared/comments';
 
 
 function RenderCampsite({campsite}){
@@ -19,9 +20,32 @@ function RenderCampsite({campsite}){
     return <View/>
 }
 
+const RenderComments = ({comments}) => {
+
+    renderCommentItem = ({item}) => {
+        return(
+            <View style={{margin: 10}}>
+                <Text style={{fontSize: 14}}>{item.text}</Text>
+                <Text style={{fontSize: 12}}>{item.rating} Stars</Text>
+                <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
+            </View>
+        )
+    } 
+
+    return(
+        <Card title='Comments'>
+            <FlatList data={comments}
+                renderItem={renderCommentItem}
+                keyExtractor={item => item.id.toString()}>
+            </FlatList>
+        </Card>
+    )
+}
+
 class CampsiteInfo extends Component{
     state = {
-        campsites: CAMPSITES
+        campsites: CAMPSITES,
+        comments: COMMENTS
     }
 
     static navigationOptions = {
@@ -31,7 +55,13 @@ class CampsiteInfo extends Component{
     render(){
         const campsiteId = this.props.navigation.getParam('campsiteId');
         const campsite = this.state.campsites.filter(campsite => campsite.id === campsiteId)[0];
-        return <RenderCampsite campsite={campsite}/>
+        const comments = this.state.comments.filter(comment => comment.campsiteId === campsiteId);
+        return(
+            <ScrollView>
+                <RenderCampsite campsite={campsite}/>
+                <RenderComments comments={comments}/>
+            </ScrollView>
+        )
     }
 }
 export default CampsiteInfo;
