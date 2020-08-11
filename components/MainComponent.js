@@ -8,6 +8,8 @@ import {View, Platform, StyleSheet, Text, ScrollView, Image} from 'react-native'
 import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
+import { connect } from 'react-redux';
+import { fetchCampsites, fetchComments, fetchPromotions, fetchPartners} from '../redux/ActionCreators';
 
 const AboutNavigator = createStackNavigator(
     {
@@ -191,6 +193,13 @@ const MainNavigator = createDrawerNavigator(
 
 class Main extends Component{
 
+    componentDidMount(){
+        this.props.fetchComments();
+        this.props.fetchCampsites();
+        this.props.fetchPartners();
+        this.props.fetchPromotions();
+    }
+
     render(){
         return(
             <View style={{
@@ -231,5 +240,12 @@ const styles = StyleSheet.create({
         fontSize: 24
     }
 });
-
-export default Main;
+//these are the action creators that use thunk to send async calls to fetch from server
+mapDispatchToProps = {
+    fetchCampsites,
+    fetchComments,
+    fetchPartners,
+    fetchPromotions
+};
+//this is how to get access to the action creators in a component
+export default connect(null, mapDispatchToProps)(Main);
