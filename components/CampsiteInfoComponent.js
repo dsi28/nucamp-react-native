@@ -77,7 +77,6 @@ class CampsiteInfo extends Component{
 
     handleComment = (campsiteId) => {
         this.props.postComment(campsiteId, this.state.rating, this.state.author, this.state.text);
-        console.log(JSON.stringify(this.state));
     }
 
     resetForm = () => {
@@ -151,6 +150,7 @@ class CampsiteInfo extends Component{
                                 onPress={()=>{
                                     this.handleComment(campsiteId);
                                     this.resetForm();
+                                    this.toggleModal();
                                 }}
                                 color='#5637DD'
                                 title='Submit'

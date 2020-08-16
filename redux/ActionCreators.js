@@ -33,7 +33,6 @@ export const addComments = (comments) => ({
 
 //export const postFavorite = (campsiteId) => (dispatch) => {
 export const postComment = (campsiteId, rating, author, text) => (dispatch) =>{
-    console.log('---------------------------');
     const newComment = {
         campsiteId,
         rating,
@@ -163,7 +162,6 @@ export const addPartners = partners => ({
 });
 
 export const postFavorite = (campsiteId) => (dispatch) => {
-    console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     setTimeout(() => {
         dispatch(addFavorite(campsiteId))
     },2000);
