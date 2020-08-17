@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
+import Swipeout from 'react-native-swipeout';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { deleteFavorite} from '../redux/ActionCreators';
 
 class Favorites extends Component{
     static navigationOptions = {
@@ -13,13 +15,22 @@ class Favorites extends Component{
     render(){
         const { navigate } = this.props.navigation; //have access to this becuase this component is set as a Navigator in the MainComponent
         const renderFavoriteItem = ({item}) => {
+            const rightButton = [
+                {
+                    text: 'Delete',
+                    type: 'delete',
+                    onPress: ()=>{ this.props.deleteFavorite(item.id)}
+                }
+            ];
             return(
-                <ListItem
-                    title={item.name}
-                    subtitle={item.description}
-                    leftAvatar={{source: {uri: baseUrl+item.image}}}
-                    onPress={() => navigate('CampsiteInfo', {campsiteId: item.id})}
-                />
+                <Swipeout right={rightButton} autoClose={true}>
+                    <ListItem
+                        title={item.name}
+                        subtitle={item.description}
+                        leftAvatar={{source: {uri: baseUrl+item.image}}}
+                        onPress={() => navigate('CampsiteInfo', {campsiteId: item.id})}
+                    />
+                </Swipeout>
             )
         }
         if(this.props.campsites.isLoading){
@@ -44,4 +55,8 @@ const mapStateToProps = state => {
         favorites: state.favorites
     }
 }
-export default connect(mapStateToProps)(Favorites);
+const mapDispatchToProps = {
+    deleteFavorite: campsiteId => (deleteFavorite(campsiteId))
+    //Do you have to include the parameters here???
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
