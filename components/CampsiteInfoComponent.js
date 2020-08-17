@@ -10,10 +10,16 @@ import { postFavorite, postComment } from '../redux/ActionCreators';
 function RenderCampsite(props){
     const {campsite} = props;
 
+    const view = React.createRef();
+
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
 
     const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: ()=>true,
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderGrant: () => {
+            view.current.rubberBand(1000)
+            .then(endState => console.log(endState.finshed ? 'finished' : 'canceled'));
+        },  
         onPanResponderEnd: (e, gestureState) => {
             console.log('pan responder end',gestureState);
             if(recognizeDrag(gestureState)){
@@ -44,6 +50,7 @@ function RenderCampsite(props){
                 animation='fadeInDown' 
                 duration={2000} 
                 delay={1000}
+                ref={view}
                 {...panResponder.panHandlers}>
                 <Card 
                     featuredTitle={campsite.name}
