@@ -14,6 +14,8 @@ function RenderCampsite(props){
 
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
 
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
+
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderGrant: () => {
@@ -39,6 +41,8 @@ function RenderCampsite(props){
                     ],
                     { cancelable: false }
                 )
+            } else if(recognizeComment(gestureState)){
+                props.onShowModal();
             }
             return true;
         }    
@@ -152,7 +156,7 @@ class CampsiteInfo extends Component{
                     markFavorite={()=> this.markFavorite(campsiteId)}
                     onShowModal={()=>this.toggleModal()}
                 />
-                <RenderComments comments={comments}/>
+                <RenderComments comments={comments} />
                 <Modal
                     animationType={'slide'}
                     transparent={false}
