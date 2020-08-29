@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {View, Platform, StyleSheet, Text, ScrollView, Image} from 'react-native';
+import {View, Platform, StyleSheet, Text,
+    ScrollView, Image, Alert, ToastAndroid} from 'react-native';
 import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
+import NetInfo from '@react-native-community/netinfo';
+
 import Reservation from './ReservationComponent';
 import Directory from './DirectoryComponent';
 import Home from './HomeComponent';
@@ -313,6 +316,13 @@ class Main extends Component{
         this.props.fetchCampsites();
         this.props.fetchPartners();
         this.props.fetchPromotions();
+
+        // NetInfo.fetch().then(connectionInfo => {
+        //     (Platform.OS === 'ios') ?
+        //         Alert.alert('Initial Network Connectivity Type:', connectionInfo.type)
+        //         : ToastAndroid.show('Initial Network Connectivity Type: ' +
+        //             connectionInfo.type, ToastAndroid.LONG);
+        // });
     }
 
     render(){
